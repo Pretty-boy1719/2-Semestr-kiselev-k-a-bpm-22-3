@@ -3,42 +3,69 @@
 #include<iostream>
 
 
+Rational::Rational()
+	:num_(0),
+	denom_(1)
+{
+}
+
+Rational::Rational(const int32_t intNumber)
+	:Rational(intNumber, 1)
+{
+}
+
+Rational::Rational(const int32_t numInp, const int32_t denomInp)
+{
+	if (denomInp <= 0)
+		throw std::invalid_argument("Expected positive number");
+
+	num_ = numInp;
+	denom_ = denomInp;
+	norm();
+}
+
+Rational::Rational(const Rational& myRational)
+	:num_(myRational.num_)
+	, denom_(myRational.denom_)
+{
+}
+
 Rational& Rational::operator=(const Rational& rhs) {
-	num = rhs.num;
-	denom = rhs.denom;
+	num_ = rhs.num_;
+	denom_ = rhs.denom_;
 	return *this;
 }
 
 Rational& Rational::operator+=(const Rational& rhs) {
-	int32_t coef = rhs.denom / gcd(std::abs(denom), rhs.denom);
-	num *= coef;
-	denom *= coef;
-	num += denom / rhs.denom * rhs.num;
+	int32_t coef = rhs.denom_ / gcd(std::abs(denom_), rhs.denom_);
+	num_ *= coef;
+	denom_ *= coef;
+	num_ += denom_ / rhs.denom_ * rhs.num_;
 	norm();
 	return *this;
 }
 Rational& Rational::operator-=(const Rational& rhs) {
-	int32_t coef = rhs.denom / gcd(denom, rhs.denom);
-	num *= coef;
-	denom *= coef;
-	num -= denom / rhs.denom * rhs.num;
+	int32_t coef = rhs.denom_ / gcd(denom_, rhs.denom_);
+	num_ *= coef;
+	denom_ *= coef;
+	num_ -= denom_ / rhs.denom_ * rhs.num_;
 	norm();
 	return *this;
 }
 
 Rational& Rational::operator*=(const Rational& rhs) {
-	num *= rhs.num;
-	denom *= rhs.denom;
+	num_ *= rhs.num_;
+	denom_ *= rhs.denom_;
 	norm();
 	return *this;
 }
 
 Rational& Rational::operator/=(const Rational& rhs) {
-	if (rhs.num == 0 || rhs.denom == 0)
+	if (rhs.num_ == 0 || rhs.denom_ == 0)
 		throw std::overflow_error("Divide by zero exception");
 
-	num *= rhs.denom;
-	denom *= rhs.num;
+	num_ *= rhs.denom_;
+	denom_ *= rhs.num_;
 	norm();
 	return *this;
 }
@@ -133,12 +160,12 @@ bool operator!=(const Rational& lhs, const Rational& rhs) {
 }
 
 void Rational::norm() {
-	if (denom == 0)
+	if (denom_ == 0)
 		throw std::overflow_error("Divide by zero exception");
 
-	int32_t Gcd = gcd(std::abs(num), std::abs(denom));
-	num /= Gcd;
-	denom /= Gcd;
+	int32_t Gcd = gcd(std::abs(num_), std::abs(denom_));
+	num_ /= Gcd;
+	denom_ /= Gcd;
 }
 
 int32_t gcd(int32_t a, int32_t b) {
@@ -159,7 +186,7 @@ std::istream& operator>>(std::istream& istrm, Rational& rhs) {
 
 std::ostream& Rational::writeTo(std::ostream& ostrm) const
 {
-	ostrm << num << separator << denom;
+	ostrm << num_ << separator_ << denom_;
 	return ostrm;
 }
 
@@ -171,12 +198,12 @@ std::istream& Rational::readFrom(std::istream& istrm)
 	int32_t denomInp(0);
 	istrm >> numInp >> separator >> denomInp;
 	if (istrm.good()) {
-		if (Rational::separator == separator) {
+		if (Rational::separator_ == separator) {
 			if (denomInp <= 0) {
 				throw std::invalid_argument("Expected positive denominator");
 			}
-			num = numInp;
-			denom = denomInp;
+			num_ = numInp;
+			denom_ = denomInp;
 			norm();
 		}
 		else {
@@ -186,33 +213,8 @@ std::istream& Rational::readFrom(std::istream& istrm)
 	return istrm;
 }
 
-std::pair<int32_t, int32_t> Rational ::get() {
-	return std::make_pair(num, denom);
+std::pair<int32_t, int32_t> Rational::get() const {
+	return std::make_pair(num_, denom_);
 }
 
 
-Rational::Rational() {
-	num = 0;
-	denom = 1;
-}
-
-Rational::Rational(const int32_t intNumber)
-	:Rational(intNumber, 1)
-{
-}
-
-Rational::Rational(const int32_t numInp, const int32_t denomInp)
-{
-	if (denomInp <= 0)
-		throw std::invalid_argument("Expected positive number");
-
-	num = numInp;
-	denom = denomInp;
-	norm();
-}
-
-Rational::Rational(const Rational& myRational)
-	:num(myRational.num)
-	, denom(myRational.denom)
-{
-}

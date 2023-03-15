@@ -47,11 +47,9 @@ ArrayD::ArrayD(const ArrayD& rhs) {
 	}
 }
 
-/*ArrayD::~ArrayD() {
+ArrayD::~ArrayD() {
 	delete[] memory_;
-	size_ = 0;
-	capacity_ = 0;
-}*/
+}
 
 ArrayD& ArrayD::operator=(const ArrayD& rhs) {
 	size_ = rhs.size_;
@@ -104,9 +102,15 @@ void ArrayD::resize(const ptrdiff_t new_size) {
 		new_memory[i] = 0.0;
 	}
 
-	memory_ = new_memory;
-	delete[] new_memory;
+	delete memory_;
+	memory_ = new double[capacity_];
+	
+	for (ptrdiff_t i = 0; i < new_size;i+=1) {
+		memory_[i] = new_memory[i];
+	}
+
 	size_ = new_size;
+	delete[] new_memory;
 }
 
 void ArrayD::insert(const double value, const ptrdiff_t i) {
@@ -164,7 +168,7 @@ std::istream& ArrayD::readFrom(std::istream& istrm) {
 std::ostream& ArrayD::writeTo(std::ostream& ostrm) const {
 	ostrm << '[';
 	for (ptrdiff_t i = 0; i < size_ - 1; i += 1) {
-		ostrm << memory_[i] << separator;
+		ostrm << memory_[i] << separator_;
 	}
 	ostrm << memory_[size_ - 1] << ']';
 	return ostrm;

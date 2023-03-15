@@ -7,14 +7,14 @@
 #include<iostream>
 
 
-ArrayD len(5);
-ArrayD len_num(5, 1);
-ArrayD rhs(len_num);
+
 
 const double EPS = std::numeric_limits<double>::epsilon();
 
 TEST_CASE("checking constuct") {
     ArrayD a(3);
+    CHECK(a[1] == 0);
+
     ArrayD b(3, 1);
     ArrayD c(b);
 
@@ -32,6 +32,7 @@ TEST_CASE("checking constuct") {
     for (ptrdiff_t i = 0; i < 3; i += 1) {
         CHECK(a[i] == c[i]);
     }
+    
 }
 
 TEST_CASE("checking methods") {
@@ -66,8 +67,8 @@ TEST_CASE("checking methods") {
     CHECK(a[6] - 10 <= EPS);
 
     a.pop_back();
-    //CHECK_THROWS(a[7]);
-    //CHECK_THROWS(a[15]);
-   // CHECK_THROWS(a[-1]);
-
+    CHECK_THROWS(a[7]);
+    CHECK_THROWS(a[15]);
+    CHECK_THROWS(a[-1]);
+   
 }

@@ -29,7 +29,7 @@ public:
 	std::ostream& writeTo(std::ostream& ostrm) const;
 	std::istream& readFrom(std::istream& istrm);
 	
-	std::pair<int32_t, int32_t> get();
+	std::pair<int32_t, int32_t> get() const;
 
 	void bug();
 
@@ -37,10 +37,10 @@ private:
 	void norm();
 
 private:
-	int32_t num{ 0 };
-	int32_t denom{ 1 };
+	int32_t num_{ 0 };
+	int32_t denom_{ 1 };
 
-	static const char separator{ '/' };
+	static const char separator_{ '/' };
 };
 
 std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs);

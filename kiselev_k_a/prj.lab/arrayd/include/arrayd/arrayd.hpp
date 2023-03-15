@@ -12,7 +12,7 @@ public:
 	explicit ArrayD(const ptrdiff_t len);
 	ArrayD(const ptrdiff_t len, const double num);
 	explicit ArrayD(const ArrayD& rhs);
-	~ArrayD() = default;
+	~ArrayD();
 
 	ptrdiff_t ssize() const noexcept;
 	void resize(const ptrdiff_t new_size);
@@ -35,7 +35,7 @@ private:
 	ptrdiff_t capacity_{ 0 };
 	double* memory_{ nullptr };
 
-	static const char separator{ ',' };
+	static const char separator_{ ',' };
 };
 
 std::istream& operator>>(std::istream& istrm, ArrayD& rhs);
