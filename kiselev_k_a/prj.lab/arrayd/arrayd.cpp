@@ -104,8 +104,8 @@ void ArrayD::resize(const ptrdiff_t new_size) {
 
 	delete memory_;
 	memory_ = new double[capacity_];
-	
-	for (ptrdiff_t i = 0; i < new_size;i+=1) {
+
+	for (ptrdiff_t i = 0; i < new_size; i += 1) {
 		memory_[i] = new_memory[i];
 	}
 
