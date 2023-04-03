@@ -10,7 +10,7 @@
 class Rational {
 public:
 	Rational();
-	explicit Rational(const int32_t intNumber);
+	explicit Rational(const int32_t intNumber) noexcept;
 	Rational(const int32_t num, const int32_t denom);
 	Rational(const Rational& myRational);
 	~Rational() = default;
@@ -26,8 +26,8 @@ public:
 	Rational& operator++(int32_t);
 	Rational& operator--(int32_t);
 
-	std::ostream& writeTo(std::ostream& ostrm) const;
-	std::istream& readFrom(std::istream& istrm);
+	std::ostream& WriteTo(std::ostream& ostrm) const noexcept;
+	std::istream& ReadFrom(std::istream& istrm);
 	
 	std::pair<int32_t, int32_t> get() const;
 

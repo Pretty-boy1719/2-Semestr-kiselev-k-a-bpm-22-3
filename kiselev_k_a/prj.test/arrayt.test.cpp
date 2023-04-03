@@ -72,3 +72,13 @@ TEST_CASE("checking methods") {
     CHECK_THROWS(a[-1]);
 
 }
+
+TEST_CASE("CHECKING INT") {
+    ArrayT<int> a(5);
+    a[0] = 0;
+    a[1] = 1;
+    a[2] = 1.5;
+
+    CHECK(a[2] == 1);
+    CHECK(a[1] == 1);
+}

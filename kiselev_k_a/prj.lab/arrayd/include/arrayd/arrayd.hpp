@@ -9,15 +9,15 @@
 class ArrayD {
 public:
 	ArrayD();
-	explicit ArrayD(const ptrdiff_t len);
-	ArrayD(const ptrdiff_t len, const double num);
+	explicit ArrayD(const std::ptrdiff_t len);
+	ArrayD(const std::ptrdiff_t len, const double num);
 	explicit ArrayD(const ArrayD& rhs);
 	~ArrayD();
 
-	ptrdiff_t ssize() const noexcept;
-	void resize(const ptrdiff_t new_size);
-	void insert(const double value, const ptrdiff_t i);
-	void remove(const ptrdiff_t i);
+	[[nodiscard]]std::ptrdiff_t ssize() const noexcept;
+	void resize(const std::ptrdiff_t new_size);
+	void insert(const std::ptrdiff_t i, const double value);
+	void remove(const std::ptrdiff_t i);
 	void push_back(const double value);
 	void pop_back();
 
@@ -25,14 +25,14 @@ public:
 	std::ostream& writeTo(std::ostream& ostrm) const;
 
 	ArrayD& operator=(const ArrayD& rhs);
-	double& operator[](const ptrdiff_t i);
-	const double& operator[](const ptrdiff_t i) const;
+	[[nodiscard]]double& operator[](const std::ptrdiff_t i);
+	[[nodiscard]]const double& operator[](const std::ptrdiff_t i) const;
 
 
 
 private:
-	ptrdiff_t size_{ 0 };
-	ptrdiff_t capacity_{ 0 };
+	std::ptrdiff_t size_{ 0 };
+	std::ptrdiff_t capacity_{ 0 };
 	double* memory_{ nullptr };
 
 	static const char separator_{ ',' };

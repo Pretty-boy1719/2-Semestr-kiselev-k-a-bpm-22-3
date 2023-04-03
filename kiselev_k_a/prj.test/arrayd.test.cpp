@@ -37,6 +37,7 @@ TEST_CASE("checking constuct") {
 
 TEST_CASE("checking methods") {
     ArrayD a(5, 0);
+    a[0] = 0;
     a[1] = 1;
     a[2] = 2;
     a[3] = 3;
@@ -54,18 +55,18 @@ TEST_CASE("checking methods") {
     CHECK(a[6] - 0 <= EPS);
     CHECK(a.ssize() == 7);
 
-    a.insert(1, 3);
+    a.insert(3, 1);
     CHECK(a[3] - 1 <= EPS);
     CHECK(a[4] - 3 <= EPS);
     CHECK(a.ssize() == 8);
-
-    a.remove(3);
-    CHECK(a[3] - 3 <= EPS);
+   
+    a.remove(1);
+    CHECK(a[1] - 2 <= EPS);
     CHECK(a.ssize() == 7);
-
+    
     a.push_back(10);
-    CHECK(a[6] - 10 <= EPS);
-
+    CHECK(a[7] - 10 <= EPS);
+    
     a.pop_back();
     CHECK_THROWS(a[7]);
     CHECK_THROWS(a[15]);

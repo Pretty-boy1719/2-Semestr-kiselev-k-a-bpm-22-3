@@ -3,17 +3,21 @@
 #include<iostream>
 
 
-MatrixS::MatrixS(const size_type& size)
+MatrixS::MatrixS(const SizeType& size)
 {
-	if (size.first <= 0 || size.second < 0) {
+	if (get<0>(size) <= 0 || get<1>(size) <= 0) {
 		throw std::invalid_argument("Expected positive value");
 	}
-	m_ = size.first;
-	n_ = size.second;
+	m_ = get<0>(size);
+	n_ = get<1>(size);
 	data_ = new int* [m_];
 	for (ptrdiff_t i = 0; i < m_; i += 1) {
 		data_[i] = new int[n_];
 	}
+}
+
+MatrixS::MatrixS(const std::ptrdiff_t m, const std::ptrdiff_t n): MatrixS(std::make_tuple(m, n))
+{
 }
 
 MatrixS::MatrixS(const MatrixS& rhs) {
@@ -53,46 +57,52 @@ MatrixS& MatrixS::operator=(const MatrixS& rhs) {
 	return *this;
 }
 
-const MatrixS::size_type& MatrixS::ssize() const noexcept {
-	return std::make_pair(m_, n_);
-}
 
-int& MatrixS::at(const size_type& elem) {
-	if (elem.first < 0 || elem.first>=m_ ||
-		elem.second < 0 || elem.second >= n_) {
-		throw std::invalid_argument("Index out of range");
+
+int& MatrixS::at(const SizeType& elem) {
+	if (get<0>(elem) < 0 || get<0>(elem)>=m_ ||
+		get<1>(elem) < 0 || get<1>(elem) >= n_) {
+		throw std::out_of_range("Index out of range");
 	}
 
-	return data_[elem.first][elem.second];
+	return data_[get<0>(elem)][get<1>(elem)];
 }
 
-const int MatrixS::at(const size_type& elem) const {
-	if (elem.first < 0 || elem.first >= m_ ||
-		elem.second < 0 || elem.second >= n_) {
-		throw std::invalid_argument("Index out of range");
+const int& MatrixS::at(const SizeType& elem) const{
+	if (get<0>(elem) < 0 || get<0>(elem) >= m_ ||
+		get<1>(elem) < 0 || get<1>(elem) >= n_) {
+		throw std::out_of_range("Index out of range");
 	}
 
-	return data_[elem.first][elem.second];
+	return data_[get<0>(elem)][get<1>(elem)];
 }
 
-void MatrixS::resize(const size_type& new_size) {
-	if (new_size.first <= 0 || new_size.second <= 0) {
+int& MatrixS::at(const std::ptrdiff_t i, const std::ptrdiff_t j) {
+	return this->at(std::make_tuple(i, j));
+}
+
+const int& MatrixS::at(const std::ptrdiff_t i, const std::ptrdiff_t j) const {
+	return this->at(std::make_tuple(i, j));
+}
+
+void MatrixS::resize(const SizeType& new_size) {
+	if (get<0>(new_size) <= 0 || get<1>(new_size) <= 0) {
 		throw std::invalid_argument("Expected positive value");
 	}
-	if (new_size.first <= m_ && new_size.second <= n_)
+	if (get<0>(new_size) <= m_ && get<1>(new_size) <= n_)
 	{
-		m_ = new_size.first;
-		n_ = new_size.second;
+		m_ = get<0>(new_size);
+		n_ = get<1>(new_size);
 		return;
 	}
 
-	int** new_data = new int* [new_size.first];
-	for (ptrdiff_t i = 0; i < new_size.first; i += 1) {
-		new_data[i] = new int[new_size.second]{};
+	int** new_data = new int* [get<0>(new_size)];
+	for (ptrdiff_t i = 0; i < get<0>(new_size); i += 1) {
+		new_data[i] = new int[get<1>(new_size)]{};
 	}
 
-	for (ptrdiff_t i = 0; i < std::min(m_, new_size.first); i += 1) {
-		for(ptrdiff_t j = 0; j < std::min(n_, new_size.second); j += 1){
+	for (ptrdiff_t i = 0; i < std::min(m_, get<0>(new_size)); i += 1) {
+		for(ptrdiff_t j = 0; j < std::min(n_, get<1>(new_size)); j += 1){
 			new_data[i][j] = data_[i][j];
 		}
 	}
@@ -104,14 +114,22 @@ void MatrixS::resize(const size_type& new_size) {
 
 	
 	data_ = new_data;
-	m_ = new_size.first;
-	n_ = new_size.second;
+	m_ = get<0>(new_size);
+	n_ = get<1>(new_size);
 }
 
-ptrdiff_t MatrixS::getRows() const noexcept {
+void MatrixS::resize(const std::ptrdiff_t i, const std::ptrdiff_t j) {
+	this->resize(std::make_tuple(i, j));
+}
+
+
+const MatrixS::SizeType& MatrixS::ssize() const noexcept {
+	return std::make_tuple(m_, n_);
+}
+
+std::ptrdiff_t MatrixS::nRows() const noexcept {
 	return m_;
 }
-
-ptrdiff_t MatrixS::getCols() const noexcept {
+std::ptrdiff_t MatrixS::nCols() const noexcept {
 	return n_;
 }

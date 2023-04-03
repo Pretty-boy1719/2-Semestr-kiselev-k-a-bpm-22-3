@@ -9,8 +9,8 @@ Rational::Rational()
 {
 }
 
-Rational::Rational(const int32_t intNumber)
-	:Rational(intNumber, 1)
+Rational::Rational(const int32_t intNumber) noexcept
+	:Rational(intNumber, 1) 
 {
 }
 
@@ -177,21 +177,21 @@ int32_t gcd(int32_t a, int32_t b) {
 }
 
 std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs) {
-	return rhs.writeTo(ostrm);
+	return rhs.WriteTo(ostrm);
 }
 
 std::istream& operator>>(std::istream& istrm, Rational& rhs) {
-	return rhs.readFrom(istrm);
+	return rhs.ReadFrom(istrm);
 }
 
-std::ostream& Rational::writeTo(std::ostream& ostrm) const
+std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept
 {
 	ostrm << num_ << separator_ << denom_;
 	return ostrm;
 }
 
 
-std::istream& Rational::readFrom(std::istream& istrm)
+std::istream& Rational::ReadFrom(std::istream& istrm)
 {
 	int32_t numInp(0);
 	char separator(0);
@@ -200,11 +200,13 @@ std::istream& Rational::readFrom(std::istream& istrm)
 	if (istrm.good()) {
 		if (Rational::separator_ == separator) {
 			if (denomInp <= 0) {
-				throw std::invalid_argument("Expected positive denominator");
+				istrm.setstate(std::ios_base::failbit);
 			}
-			num_ = numInp;
-			denom_ = denomInp;
-			norm();
+			else {
+				num_ = numInp;
+				denom_ = denomInp;
+				norm();
+			}
 		}
 		else {
 			istrm.setstate(std::ios_base::failbit);

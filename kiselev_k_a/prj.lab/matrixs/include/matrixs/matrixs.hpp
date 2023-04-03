@@ -9,28 +9,33 @@
 
 class MatrixS {
 public:
-	using size_type = std::pair<std::ptrdiff_t, std::ptrdiff_t>;
+	using SizeType = std::tuple<std::ptrdiff_t, std::ptrdiff_t>;
 
 public:
-	MatrixS(const size_type& size);
+	explicit MatrixS(const SizeType& size = { 0,0 });
+	MatrixS(const std::ptrdiff_t m, const std::ptrdiff_t n);
 	MatrixS(const MatrixS& rhs);
 	~MatrixS();
 
-
 	MatrixS& operator=(const MatrixS& rhs);
 
-	const size_type& ssize() const noexcept;
-	int& at(const size_type& elem);
-	const int at(const size_type& elem) const;
-	void resize(const size_type& new_size);
-	ptrdiff_t getRows() const noexcept;
-	ptrdiff_t getCols() const noexcept;
+	[[nodiscard]] int& at(const SizeType& elem);
+	[[nodiscard]] const int& at(const SizeType& elem) const;
+	[[nodiscard]] int& at(const std::ptrdiff_t i, const std::ptrdiff_t j);
+	[[nodiscard]] const int& at(const std::ptrdiff_t i, const std::ptrdiff_t j) const;
+	
+	void resize(const SizeType& new_size);
+	void resize(const std::ptrdiff_t i, const std::ptrdiff_t j);
+
+	[[nodiscard]] const SizeType& ssize() const noexcept;
+	[[nodiscard]] std::ptrdiff_t nRows() const noexcept;
+	[[nodiscard]] std::ptrdiff_t nCols() const noexcept;
 
 private:
 	int** data_{ nullptr };
 	ptrdiff_t n_{ 0 };
 	ptrdiff_t m_{ 0 };
-	size_type size_{ 0,0 };
+	SizeType size_{ 0,0 };
 };
 
 
