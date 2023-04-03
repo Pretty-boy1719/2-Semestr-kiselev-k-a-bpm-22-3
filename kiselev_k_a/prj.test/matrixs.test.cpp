@@ -6,7 +6,7 @@
 
 #include<iostream>
 
-TEST_CASE("checking constructs") {
+TEST_CASE("checking") {
     MatrixS a({ 5,5 });
     a.at({ 1, 1 }) = 2;
     a.at(1, 2) = 3;

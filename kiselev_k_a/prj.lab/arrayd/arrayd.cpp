@@ -10,13 +10,13 @@ ArrayD::ArrayD() {
 }
 
 ArrayD::ArrayD(const std::ptrdiff_t len) {
-	if (len <= 0) {
-		throw std::invalid_argument("Expected positive value");
+	if (len < 0) {
+		throw std::invalid_argument("Expected non-negative value");
 	}
 
 	size_ = len;
-	capacity_ = size_;
-	memory_ = new double[capacity_];
+	capacity_ = size_ + 5;
+	memory_ = new double[capacity_] {};
 
 	for (std::ptrdiff_t i = 0; i < size_; i += 1) {
 		memory_[i] = 0.0;
@@ -24,13 +24,13 @@ ArrayD::ArrayD(const std::ptrdiff_t len) {
 }
 
 ArrayD::ArrayD(const std::ptrdiff_t len, const double num) {
-	if (len <= 0) {
-		throw std::invalid_argument("Expected positive value");
+	if (len < 0) {
+		throw std::invalid_argument("Expected non-negative value");
 	}
 
 	size_ = len;
-	capacity_ = size_;
-	memory_ = new double[capacity_];
+	capacity_ = size_ + 5;
+	memory_ = new double[capacity_] {};
 
 	for (std::ptrdiff_t i = 0; i < size_; i += 1) {
 		memory_[i] = num;
@@ -40,7 +40,7 @@ ArrayD::ArrayD(const std::ptrdiff_t len, const double num) {
 ArrayD::ArrayD(const ArrayD& rhs) {
 	size_ = rhs.size_;
 	capacity_ = rhs.capacity_;
-	memory_ = new double[capacity_];
+	memory_ = new double[capacity_] {};
 
 	for (std::ptrdiff_t i = 0; i < size_; i += 1) {
 		memory_[i] = rhs.memory_[i];
@@ -57,7 +57,7 @@ ArrayD& ArrayD::operator=(const ArrayD& rhs) {
 	capacity_ = rhs.capacity_;
 	if (memory_ != nullptr)
 		delete[] memory_;
-	memory_ = new double[capacity_];
+	memory_ = new double[capacity_] {};
 
 	for (std::ptrdiff_t i = 0; i < size_; i += 1) {
 		memory_[i] = rhs.memory_[i];
@@ -89,7 +89,7 @@ void ArrayD::resize(const std::ptrdiff_t new_size) {
 		throw std::invalid_argument("Value out of range");
 	}
 
-	if (new_size <= capacity_) {
+	if (new_size < capacity_) {
 		size_ = new_size;
 		return;
 	}
@@ -127,7 +127,7 @@ void ArrayD::remove(const std::ptrdiff_t i) {
 		throw std::out_of_range("Index out of range4");
 	}
 
-	for (std::ptrdiff_t j = i; j < size_; j += 1) {
+	for (std::ptrdiff_t j = i; j < size_ - 1; j += 1) {
 		memory_[j] = memory_[j + 1];
 	}
 	size_ -= 1;
@@ -152,7 +152,7 @@ std::istream& ArrayD::readFrom(std::istream& istrm) {
 	double temp_num = 0;
 	for (std::ptrdiff_t i = 0; i < num_inp; i += 1) {
 		istrm >> temp_num;
-		insert(temp_num, size_);
+		insert(size_, temp_num);
 	}
 
 	return istrm;

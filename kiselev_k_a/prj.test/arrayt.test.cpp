@@ -21,16 +21,16 @@ TEST_CASE("checking constuct") {
     CHECK_THROWS(ArrayT<double>(-1));
 
     for (ptrdiff_t i = 0; i < 3; i += 1) {
-        CHECK(a[i] == b[i]-1);
+        CHECK(std::abs(a[i]- b[i]+1)<=EPS);
     }
 
     for (ptrdiff_t i = 0; i < 3; i += 1) {
-        CHECK(b[i] == c[i]);
+        CHECK(std::abs(b[i] - c[i])<=EPS);
     }
 
     a = b;
     for (ptrdiff_t i = 0; i < 3; i += 1) {
-        CHECK(a[i] == c[i]);
+        CHECK(std::abs(a[i] - c[i])<=EPS);
     }
     
 }
@@ -41,44 +41,52 @@ TEST_CASE("checking methods") {
     a[2] = 2.0;
     a[3] = 3.0;
     a[4] = 4.0;
-    CHECK(a[0] - 0 <= EPS);
-    CHECK(a[1] - 1 <= EPS);
-    CHECK(a[2] - 2 <= EPS);
-    CHECK(a[3] - 3 <= EPS);
-    CHECK(a[4] - 4 <= EPS);
+    CHECK(std::abs(a[0] - 0) <= EPS);
+    CHECK(std::abs(a[1] - 1) <= EPS);
+    CHECK(std::abs(a[2] - 2) <= EPS);
+    CHECK(std::abs(a[3] - 3) <= EPS);
+    CHECK(std::abs(a[4] - 4) <= EPS);
 
     CHECK(a.ssize() == 5);
 
     a.resize(7);
-    CHECK(a[5] - 0 <= EPS);
-    CHECK(a[6] - 0 <= EPS);
+    CHECK(std::abs(a[5] - 0) <= EPS);
+    CHECK(std::abs(a[6] - 0) <= EPS);
     CHECK(a.ssize() == 7);
 
-    a.insert(1, 3);
-    CHECK(a[3] - 1 <= EPS);
-    CHECK(a[4] - 3 <= EPS);
+    a.insert(3, 1);
+    CHECK(std::abs(a[3] - 1) <= EPS);
+    CHECK(std::abs(a[4] - 3) <= EPS);
     CHECK(a.ssize() == 8);
 
     a.remove(3);
-    CHECK(a[3] - 3 <= EPS);
+    CHECK(std::abs(a[3] - 3) <= EPS);
     CHECK(a.ssize() == 7);
 
     a.push_back(10);
-    CHECK(a[6] - 10 <= EPS);
+    CHECK(std::abs(a[7] - 10) <= EPS);
 
+    a.insert(8, 11);
+    CHECK(a[8] - 11 <= EPS);
     a.pop_back();
+    a.pop_back();
+
     CHECK_THROWS(a[7]);
     CHECK_THROWS(a[15]);
     CHECK_THROWS(a[-1]);
+    CHECK_THROWS(a.resize(0));
+    CHECK_THROWS(a.insert(8, 2));
+    CHECK_THROWS(a.insert(-1, 2));
+    CHECK_THROWS(a.remove(-1));
+    CHECK_THROWS(a.remove(7));
+
+    ArrayT<double> h(0);
+    CHECK_THROWS(h.remove(0));
 
 }
 
-TEST_CASE("CHECKING INT") {
-    ArrayT<int> a(5);
-    a[0] = 0;
-    a[1] = 1;
-    a[2] = 1.5;
-
-    CHECK(a[2] == 1);
-    CHECK(a[1] == 1);
+TEST_CASE_TEMPLATE("numeric variable", ArrayT, int, double, long long, ptrdiff_t) {
+    ArrayT var = ArrayT();
+    var -= 1;
+    CHECK(var == -1);
 }
