@@ -14,3 +14,5 @@ add_executable(arrayt.test arrayt.test.cpp "arrayt.test.cpp")
 target_link_libraries(arrayt.test arrayt doctest::doctest)
 add_test(NAME arrayt.test COMMAND arrayt.test)
 
+
+

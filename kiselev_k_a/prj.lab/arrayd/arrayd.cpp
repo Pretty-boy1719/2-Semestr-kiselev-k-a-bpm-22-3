@@ -38,13 +38,19 @@ ArrayD::ArrayD(const std::ptrdiff_t len, const double num) {
 }
 
 ArrayD::ArrayD(const ArrayD& rhs) {
+	if (this == &rhs) {
+		return;
+	}
+
 	size_ = rhs.size_;
 	capacity_ = rhs.capacity_;
 	memory_ = new double[capacity_] {};
 
-	for (std::ptrdiff_t i = 0; i < size_; i += 1) {
-		memory_[i] = rhs.memory_[i];
+	if (rhs.memory_ == nullptr) {
+		memory_ = nullptr;
 	}
+
+	std::copy(rhs.memory_, rhs.memory_ + rhs.size_, memory_);
 }
 
 ArrayD::~ArrayD() {
@@ -53,10 +59,17 @@ ArrayD::~ArrayD() {
 }
 
 ArrayD& ArrayD::operator=(const ArrayD& rhs) {
+	if (this == &rhs) {
+		return *this;
+	}
+
 	size_ = rhs.size_;
 	capacity_ = rhs.capacity_;
+
+
 	if (memory_ != nullptr)
 		delete[] memory_;
+
 	memory_ = new double[capacity_] {};
 
 	for (std::ptrdiff_t i = 0; i < size_; i += 1) {

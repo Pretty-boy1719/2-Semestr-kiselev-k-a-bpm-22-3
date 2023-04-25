@@ -210,14 +210,22 @@ Rational& Rational::operator--() {
 	return *this;
 }
 
-Rational& Rational::operator++(int32_t) {
+Rational Rational::operator++(int32_t) {
 	Rational temp(*this);
 	++(*this);
 
 	return temp;
-}Rational& Rational::operator--(int32_t) {
+}Rational Rational::operator--(int32_t) {
 	Rational temp(*this);
 	--(*this);
+
+	return temp;
+}
+
+Rational Rational::operator-() const {
+	Rational temp;
+	temp.num_ = -num_;
+	temp.denom_ = denom_;
 
 	return temp;
 }

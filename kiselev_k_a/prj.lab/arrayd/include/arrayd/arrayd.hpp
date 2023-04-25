@@ -11,7 +11,7 @@ public:
 	ArrayD();
 	explicit ArrayD(const std::ptrdiff_t len);
 	ArrayD(const std::ptrdiff_t len, const double num);
-	explicit ArrayD(const ArrayD& rhs);
+	ArrayD(const ArrayD& rhs);
 	~ArrayD();
 
 	[[nodiscard]]std::ptrdiff_t ssize() const noexcept;

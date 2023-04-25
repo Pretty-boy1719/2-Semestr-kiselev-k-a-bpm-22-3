@@ -3,16 +3,16 @@
 #include<iostream>
 
 
-MatrixS::MatrixS(const SizeType& size)
+MatrixS::MatrixS(const SizeType& size):
+	m_(std::get<0>(size)), n_(std::get<1>(size)), data_(nullptr)
 {
-	if (get<0>(size) <= 0 || get<1>(size) <= 0) {
+	if (m_<0 || n_<0) {
 		throw std::invalid_argument("Expected positive value");
 	}
-	m_ = get<0>(size);
-	n_ = get<1>(size);
+	
 	data_ = new int* [m_];
 	for (ptrdiff_t i = 0; i < m_; i += 1) {
-		data_[i] = new int[n_];
+		data_[i] = new int[n_] {};
 	}
 }
 
@@ -20,33 +20,56 @@ MatrixS::MatrixS(const std::ptrdiff_t m, const std::ptrdiff_t n): MatrixS(std::m
 {
 }
 
-MatrixS::MatrixS(const MatrixS& rhs) {
-	*this = rhs;
+MatrixS::MatrixS(const MatrixS& rhs):
+	m_(rhs.m_), n_(rhs.n_), size_(rhs.size_), data_(nullptr)
+{
+	if (this == &rhs)
+		return;
+
+	data_ = new int* [m_];
+	for (ptrdiff_t i = 0; i < m_; i += 1) {
+		data_[i] = new int[n_] {};
+	}
+
+	for (ptrdiff_t i = 0; i < m_; i += 1) {
+		for (ptrdiff_t j = 0; j < n_; j += 1) {
+			data_[i][j] = rhs.data_[i][j];
+		}
+	}
 }
 
 MatrixS::~MatrixS() {
-	for (ptrdiff_t i = 0; i < m_; i += 1) {
-		delete[] data_[i];
-	}
-	delete[] data_;
+	if (data_ != nullptr) {
+		for (ptrdiff_t i = 0; i < m_; i += 1) {
+			delete[] data_[i];
+		}
+		delete[] data_;
 
+	}
+	
 	data_ = nullptr;
 	m_ = -1;
 	n_ = -1;
 }
 
 MatrixS& MatrixS::operator=(const MatrixS& rhs) {
-	for (ptrdiff_t i = 0; i < m_; i += 1) {
-		delete[] data_[i];
-	}
-	delete[] data_;
+	if (this == &rhs)
+		return *this;
 
+
+	if (data_ != nullptr) {
+		for (ptrdiff_t i = 0; i < m_; i += 1) {
+			delete[] data_[i];
+		}
+		delete[] data_;
+	}
+	
 	m_ = rhs.m_;
 	n_ = rhs.n_;
 
 	data_ = new int* [m_];
 	for (ptrdiff_t i = 0; i < m_; i += 1) {
-		data_[i] = new int[n_];
+		data_[i] = new int[n_] {};
 	}
 
 	for (ptrdiff_t i = 0; i < m_; i += 1) {
@@ -123,8 +146,8 @@ void MatrixS::resize(const std::ptrdiff_t i, const std::ptrdiff_t j) {
 }
 
 
-const MatrixS::SizeType& MatrixS::ssize() const noexcept {
-	return std::make_tuple(m_, n_);
+MatrixS::SizeType MatrixS::ssize() noexcept {
+	return SizeType(m_, n_);
 }
 
 std::ptrdiff_t MatrixS::nRows() const noexcept {

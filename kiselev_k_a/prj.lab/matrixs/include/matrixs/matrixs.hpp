@@ -27,14 +27,14 @@ public:
 	void resize(const SizeType& new_size);
 	void resize(const std::ptrdiff_t i, const std::ptrdiff_t j);
 
-	[[nodiscard]] const SizeType& ssize() const noexcept;
+	[[nodiscard]] SizeType ssize() noexcept;
 	[[nodiscard]] std::ptrdiff_t nRows() const noexcept;
 	[[nodiscard]] std::ptrdiff_t nCols() const noexcept;
 
 private:
 	int** data_{ nullptr };
-	ptrdiff_t n_{ 0 };
 	ptrdiff_t m_{ 0 };
+	ptrdiff_t n_{ 0 };
 	SizeType size_{ 0,0 };
 };
 

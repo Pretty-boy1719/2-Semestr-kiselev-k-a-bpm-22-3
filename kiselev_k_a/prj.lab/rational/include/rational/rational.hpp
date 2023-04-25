@@ -29,8 +29,10 @@ public:
 
 	Rational& operator++();
 	Rational& operator--();
-	Rational& operator++(int32_t);
-	Rational& operator--(int32_t);
+	Rational operator++(int32_t);
+	Rational operator--(int32_t);
+
+	Rational operator-() const;
 
 	std::ostream& WriteTo(std::ostream& ostrm) const noexcept;
 	std::istream& ReadFrom(std::istream& istrm);
