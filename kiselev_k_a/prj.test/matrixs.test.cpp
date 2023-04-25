@@ -57,6 +57,7 @@ TEST_CASE("checking") {
     CHECK_THROWS(a.resize({ 9, 0 }));
 }
 
+
 TEST_CASE("CONSTRUCTORS") {
 	SUBCASE("CONSTRUCTOR WITHOUT PARAMETRS") {
 		MatrixS a;

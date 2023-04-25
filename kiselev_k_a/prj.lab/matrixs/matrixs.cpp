@@ -116,8 +116,11 @@ void MatrixS::resize(const SizeType& new_size) {
 	{
 		m_ = get<0>(new_size);
 		n_ = get<1>(new_size);
+		size_ = new_size;
 		return;
 	}
+
+	size_ = new_size;
 
 	int** new_data = new int* [get<0>(new_size)];
 	for (ptrdiff_t i = 0; i < get<0>(new_size); i += 1) {
@@ -142,12 +145,14 @@ void MatrixS::resize(const SizeType& new_size) {
 }
 
 void MatrixS::resize(const std::ptrdiff_t i, const std::ptrdiff_t j) {
-	this->resize(std::make_tuple(i, j));
+	resize(std::make_tuple(i, j));
 }
 
 
-MatrixS::SizeType MatrixS::ssize() noexcept {
-	return SizeType(m_, n_);
+
+
+const MatrixS::SizeType& MatrixS::ssize() const noexcept {
+	return size_;
 }
 
 std::ptrdiff_t MatrixS::nRows() const noexcept {
