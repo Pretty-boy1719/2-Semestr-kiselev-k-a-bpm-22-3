@@ -76,18 +76,18 @@ ArrayT<T>::ArrayT(const std::ptrdiff_t len, const T num) {
 
 template<typename T>
 ArrayT<T>::ArrayT(const ArrayT& rhs)
-	:size_(rhs.size_)
-	, capacity_(rhs.capacity_)
-	, memory_(nullptr)
 {
 	if (this == &rhs)
 		return;
 
-	memory_ = new double[capacity_];
+	size_ = rhs.size_;
+	capacity_ = rhs.capacity_;
+
 	if (rhs.memory_ == nullptr) {
 		memory_ = nullptr;
 	}
 	else {
+		memory_ = new double[capacity_];
 		std::copy(rhs.memory_, rhs.memory_ + rhs.size_, memory_);
 	}
 }
@@ -100,8 +100,13 @@ ArrayT<T>::~ArrayT() {
 
 template<typename T>
 ArrayT<T>& ArrayT<T>::operator=(const ArrayT& rhs) {
+	if (this == &rhs) {
+		return *this;
+	}
+
 	size_ = rhs.size_;
 	capacity_ = rhs.capacity_;
+
 	if (memory_ != nullptr)
 		delete[] memory_;
 	memory_ = new T[capacity_]{};
