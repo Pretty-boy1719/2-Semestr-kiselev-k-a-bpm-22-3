@@ -14,5 +14,9 @@ add_executable(arrayt.test arrayt.test.cpp "arrayt.test.cpp")
 target_link_libraries(arrayt.test arrayt doctest::doctest)
 add_test(NAME arrayt.test COMMAND arrayt.test)
 
+add_executable(geo2d.test geo2d.test.cpp "geo2d.test.cpp")
+target_link_libraries(geo2d.test geo2d)
+add_test(NAME geo2d.test COMMAND geo2d.test)
+
 
 
