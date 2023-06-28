@@ -4,8 +4,8 @@
 
 HitOrMiss::HitOrMiss() {
     image_ = cv::Mat{ kDefaultImageDimension,kDefaultImageDimension,CV_8UC1, cv::Scalar(kWhite) };
-    kernel_foreground_ = cv::Mat{ kDefaulKernel,kDefaulKernel, CV_8UC1, cv::Scalar(kBlack) };
-    kernel_background_ = cv::Mat{ kDefaulKernel,kDefaulKernel, CV_8UC1, cv::Scalar(kBlack) };
+    kernel_foreground_ = cv::Mat{ kDefaulKernelForeground,kDefaulKernelForeground, CV_8UC1, cv::Scalar(kBlack) };
+    kernel_background_ = cv::Mat{ kDefaulKernelBackground,kDefaulKernelBackground, CV_8UC1, cv::Scalar(kBlack) };
     hit_highlight_ = cv::Mat{ kDefaulHitHighlight,kDefaulHitHighlight, CV_8UC1, cv::Scalar(kBlack) };
 }
 
@@ -55,20 +55,18 @@ void HitOrMiss::set_image(cv::Mat lhs) {
 }
 void HitOrMiss::set_kernel_foreground(cv::Mat lhs) {
     kernel_foreground_ = TypeCheck(lhs);
-    SizeCheck(kernel_foreground_, kernel_background_);
-    SizeCheck(kernel_foreground_, hit_highlight_);
 }
 void HitOrMiss::set_kernel_background(cv::Mat lhs) {
     SizeCheck(kernel_foreground_, lhs);
     kernel_background_ = TypeCheck(lhs);
 }
 void HitOrMiss::set_hit_highlight(cv::Mat lhs) {
-    SizeCheck(kernel_foreground_, lhs);
     hit_highlight_ = TypeCheck(lhs);
-    
 }
 
 cv::Mat HitOrMiss::DoHitOrMiss() const {
+
+    SizeCheck(kernel_foreground_, kernel_background_);
 
     // Проход по изображению структурным элементом переднего плана
     cv::Mat dst_foreground = MaskMatching(true);
@@ -81,6 +79,8 @@ cv::Mat HitOrMiss::DoHitOrMiss() const {
 }
 
 cv::Mat HitOrMiss::DoBoundaryExtraction() const {
+
+    SizeCheck(kernel_foreground_, kernel_background_);
 
     cv::Mat hit_or_miss = DoHitOrMiss();
     cv::Mat dst = SubstractionOperation(image_, hit_or_miss);
@@ -135,7 +135,8 @@ cv::Mat HitOrMiss::MaskMatching(const bool& foreground) const {
                     for (int step_row = 0; step_row < kernel.rows; step_row += 1) {
                         for (int step_col = 0; step_col < kernel.cols; step_col += 1) {
 
-                            if (hit_highlight_.at<uchar>(step_row, step_col) == kBlack)
+                            if (mask_row + step_row<image_.rows && mask_col + step_col<image_.cols)
+                                if (hit_highlight_.at<uchar>(step_row, step_col) == kBlack)
                                 dst.at<uchar>(mask_row + step_row, mask_col + step_col) = kBlack;
                         }
                     }

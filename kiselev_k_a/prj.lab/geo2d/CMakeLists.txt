@@ -4,4 +4,4 @@ target_include_directories(geo2d PUBLIC INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-install(TARGETS geo2d)
+

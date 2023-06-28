@@ -141,7 +141,11 @@ void CTikz::add_parse(){
     if(block_status != 0){
         throw "Blocks not ended";
     }
-    writing << std::endl;
+    writing << "\\newpage"<<std::endl;
+}
+
+void CTikz::add_caption(std::string s){
+    writing <<std::endl;
 }
 
 void CTikz::draw_table(const std::vector< std::vector<double> > &matrix){

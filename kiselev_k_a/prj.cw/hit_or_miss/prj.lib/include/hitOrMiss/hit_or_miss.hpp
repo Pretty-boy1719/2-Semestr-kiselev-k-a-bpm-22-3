@@ -219,7 +219,8 @@ private:
     const int kWhite = 255; // код белого пикселя
     const int kBlack = 0; // код черного пкселя
     const int kDefaulHitHighlight = 1; // размер структурного элемента по выделению (по умолчанию)
-    const int kDefaulKernel = 3; // размер структурного элемента (по умолчанию)
+    const int kDefaulKernelForeground = 3; // размер структурного элемента (по умолчанию)
+    const int kDefaulKernelBackground = 1; // размер структурного элемента (по умолчанию)
     const int kThresholdValue = 127; // пороговое значение бинаризации (по умолчанию)
     const int kDefaultImageDimension = 200; // размер изображения для обработки (по умочанию)
 };

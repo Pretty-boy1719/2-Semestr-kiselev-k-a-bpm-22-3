@@ -226,6 +226,8 @@ public:
     */
     void add_parse();
 
+    void add_caption(std::string);
+
     /**
      * @brief Отображает матрицу в документе
      * @param points вектор точек формата (x, y)

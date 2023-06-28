@@ -27,8 +27,8 @@ find_package(Doxygen)
 if (DOXYGEN_FOUND)
     set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/./docs/Doxyfile.in)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/doc_doxygen/Doxyfile)
-
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+	
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT}  @ONLY)
     message("Doxygen build started")
     
     add_custom_target( doc_doxygen ALL
